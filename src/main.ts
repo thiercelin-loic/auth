@@ -26,8 +26,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Backauth API')
-    .setDescription('API documentation for Backauth')
+    .setTitle('Auth API')
+    .setDescription('API documentation for Auth')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

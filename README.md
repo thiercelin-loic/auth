@@ -1,4 +1,4 @@
-# Back-End Authentication Service
+# Auth
 
 A robust, secure, and scalable authentication service built with NestJS. This service provides user registration, authentication, authorization, and account management capabilities.
 
@@ -38,7 +38,7 @@ Clone the repository and install dependencies:
 
 ```bash
 git clone <your-repo-url>
-cd backauth
+cd auth
 npm install
 ```
 
