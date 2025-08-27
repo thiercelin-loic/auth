@@ -9,15 +9,15 @@ import {
   Delete,
   Param,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { UsersService } from '../users.service';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { UsersService } from '../services/users.service';
 
 import { SessionsService } from '../services/sessions.service';
 
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { VerifyMfaDto } from '../dto/verify-mfa.dto';
+import { UpdateUserDto } from '../validators/update-user.dto';
+import { VerifyMfaDto } from '../validators/verify-mfa.dto';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)

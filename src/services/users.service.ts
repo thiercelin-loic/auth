@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import bcrypt from 'bcrypt';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from '../validators/update-user.dto';
 
 @Injectable()
 export class UsersService {
