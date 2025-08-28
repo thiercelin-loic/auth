@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class VerifyMfaDto {
   @IsString()
@@ -7,23 +8,29 @@ export class VerifyMfaDto {
 }
 
 export class UpdateUserDto {
+  @ApiProperty({ example: 'John', required: false })
   @IsString()
   first_name?: string;
 
+  @ApiProperty({ example: 'Doe', required: false })
   @IsString()
   last_name?: string;
 
+  @ApiProperty({ example: 'user@example.com', required: false })
   @IsString()
   email?: string;
 
+  @ApiProperty({ example: 'NewPassword123!', required: false })
   @IsString()
   @IsNotEmpty()
   password?: string;
 
+  @ApiProperty({ example: 'secret', required: false })
   @IsString()
   @IsNotEmpty()
   mfa_secret?: string;
 
+  @ApiProperty({ example: true, required: false })
   @IsString()
   @IsNotEmpty()
   mfa_enabled?: boolean;
