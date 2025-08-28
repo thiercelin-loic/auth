@@ -5,11 +5,15 @@ export class RegisterDto {
   @IsNotEmpty()
   email: string;
 
+
   @IsString()
   @MinLength(8)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'password too weak',
   })
+
+  @IsString()
+  @IsNotEmpty()
   password: string;
 
   @IsString()

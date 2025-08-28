@@ -34,6 +34,9 @@ export class User {
   is_verified: boolean;
 
   @Column({ default: false })
+  email_verified: boolean;
+
+  @Column({ default: false })
   mfa_enabled: boolean;
 
   @Column({ nullable: true })
@@ -50,4 +53,7 @@ export class User {
 
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];
+
+  @Column({ nullable: true, type: 'text' })
+  refresh_token: string | null;
 }
