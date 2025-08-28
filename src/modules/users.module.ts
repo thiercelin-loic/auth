@@ -5,11 +5,12 @@ import { SessionsService } from '../services/sessions.service';
 import { User } from '../validators/user.entity';
 import { Session } from '../validators/session.entity';
 import { UsersService } from '../services/users.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Session])],
   controllers: [UsersController],
-  providers: [UsersService, SessionsService],
+  providers: [UsersService, SessionsService, JwtService],
   exports: [UsersService, SessionsService],
 })
 export class UsersModule {}
