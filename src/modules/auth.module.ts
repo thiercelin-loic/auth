@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthController } from '../controllers/auth.controller';
 import { AuthService } from '../services/auth.service';
 import { JwtStrategy } from '../tokens/jwt.strategy';
+import { LocalStrategy } from '../tokens/local.strategy';
 import { UsersModule } from './users.module';
 
 @Module({
@@ -32,7 +33,8 @@ import { UsersModule } from './users.module';
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtStrategy,
+  JwtStrategy,
+  LocalStrategy,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

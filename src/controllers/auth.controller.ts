@@ -32,9 +32,6 @@ export class AuthController {
     @HttpCode(200)
     async login(@Request() req, @Res({ passthrough: true }) response: Response) {
         const { access_token } = await this.authService.login(req.user);
-
-        // If you want to set a refresh token cookie, you need to get it from the service
-        // For now, just return access_token
         return { access_token };
     }
 
@@ -64,13 +61,13 @@ export class AuthController {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         return { access_token };
     }
 
-    @Throttle({ default: { limit: 3, ttl: 60000 } }) // 3 requests per minute
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Post('forgot-password')
     @HttpCode(200)
     async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
@@ -87,11 +84,11 @@ export class AuthController {
         );
         return { message: 'Password has been reset successfully' };
     }
-
+    
     @Post('verify-email')
     @HttpCode(200)
     async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
-        this.authService.verifyEmail(verifyEmailDto.token);
+        await this.authService.verifyEmail(verifyEmailDto.token);
         return { message: 'Email verified successfully' };
     }
 }
