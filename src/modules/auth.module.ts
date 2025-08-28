@@ -26,8 +26,8 @@ import { UsersModule } from './users.module';
     }),
     ThrottlerModule.forRoot([{
       name: 'auth',
-      ttl: 60000, // 1 minute
-      limit: 5, // 5 requests per minute
+      ttl: 60000,
+      limit: 5,
     }]),
   ],
   controllers: [AuthController],
