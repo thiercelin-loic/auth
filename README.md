@@ -167,14 +167,6 @@ mau deploy
 ## Resources
 
 - [NestJS Documentation](https://docs.nestjs.com)
-- [Discord channel](https://discord.gg/G7Qnnhy)
-- [Official video courses](https://courses.nestjs.com/)
-- [NestJS Mau (AWS deployment)](https://mau.nestjs.com)
-- [NestJS Devtools](https://devtools.nestjs.com)
-- [Enterprise support](https://enterprise.nestjs.com)
-- [Jobs board](https://jobs.nestjs.com)
-- [X (Twitter)](https://x.com/nestframework)
-- [LinkedIn](https://linkedin.com/company/nestjs)
 
 
 ## Support
@@ -184,9 +176,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 
 ## License
