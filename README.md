@@ -25,8 +25,11 @@ A robust, secure, and scalable authentication service built with NestJS. This se
 
 - User registration and account creation
 - Login/logout functionality
+- Secure JWT and refresh token management (with httpOnly cookies)
 - Session management
+- Password reset and email verification flows
 - Role-based access control (RBAC)
+- Strong password enforcement
 - JWT token issuance and validation
 - User profile management
 
@@ -77,6 +80,7 @@ You can explore all endpoints, view request/response schemas, and test API calls
 
 ---
 
+
 ## API Endpoints
 
 Below is a summary of the main endpoints. For full details, see the Swagger UI.
@@ -85,6 +89,11 @@ Below is a summary of the main endpoints. For full details, see the Swagger UI.
 
 - `POST /auth/register` — Register a new user
 - `POST /auth/login` — Login and receive JWT
+- `POST /auth/logout` — Logout user (requires JWT and refresh token cookie)
+- `POST /auth/refresh-token` — Get new access token using refresh token (cookie)
+- `POST /auth/forgot-password` — Request password reset email
+- `POST /auth/reset-password` — Reset password with token (strong password required)
+- `POST /auth/verify-email` — Verify email with token
 
 ### Users
 
@@ -99,11 +108,20 @@ Below is a summary of the main endpoints. For full details, see the Swagger UI.
 - `GET /users/sessions` — List active sessions
 - `DELETE /users/sessions/:id` — Invalidate a session
 
+
 ### Roles & RBAC
 
 - Protected endpoints require appropriate roles (e.g., `GET /users` requires `admin` role).
 
 ---
+
+## Security Notes
+
+- All sensitive endpoints require JWT authentication.
+- Refresh tokens are stored in httpOnly cookies for security.
+- Passwords must be strong (min 8 chars, upper/lowercase, number/special char).
+- Email verification and password reset flows use signed JWT tokens.
+- Defensive checks are in place for malformed or missing tokens.
 
 
 ## Compile and run the project
