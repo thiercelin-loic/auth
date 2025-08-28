@@ -17,7 +17,9 @@ import { RegisterDto } from '../validators/register.dto';
 import { ForgotPasswordDto } from '../validators/forgot-password.dto';
 import { ResetPasswordDto } from '../validators/reset-password.dto';
 import { VerifyEmailDto } from '../validators/verify-email.dto';
+import { ApiBody, ApiBearerAuth, ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
@@ -30,6 +32,9 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     @HttpCode(200)
+    @ApiOperation({ summary: 'Login with email and password' })
+    @ApiBody({ schema: { properties: { email: { type: 'string', example: 'user@example.com' }, password: { type: 'string', example: 'Password123!' } }, required: ['email', 'password'] } })
+    @ApiResponse({ status: 200, description: 'JWT access token' })
     async login(@Request() req, @Res({ passthrough: true }) response: Response) {
         const { access_token } = await this.authService.login(req.user);
         return { access_token };
@@ -38,6 +43,10 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post('logout')
     @HttpCode(200)
+    @ApiOperation({ summary: 'Logout user (requires JWT and refresh_token cookie)' })
+    @ApiBearerAuth()
+    @ApiCookieAuth('refresh_token')
+    @ApiResponse({ status: 200, description: 'Logged out successfully' })
     async logout(@Request() req, @Res({ passthrough: true }) response: Response) {
         this.authService.logout(req.user.id, req.cookies.refresh_token);
         response.clearCookie('refresh_token');
@@ -46,6 +55,9 @@ export class AuthController {
 
     @Post('refresh-token')
     @HttpCode(200)
+    @ApiOperation({ summary: 'Get new access token using refresh token (cookie)' })
+    @ApiCookieAuth('refresh_token')
+    @ApiResponse({ status: 200, description: 'Returns new access token and sets new refresh token cookie' })
     async refreshToken(
         @Request() req,
         @Res({ passthrough: true }) response: Response,
