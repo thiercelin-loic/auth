@@ -11,7 +11,7 @@ export const DatabaseProvider = TypeOrmModule.forRootAsync({
     username: configService.get('MYSQL_USERNAME'),
     password: configService.get('MYSQL_PASSWORD'),
     database: configService.get('MYSQL_DATABASE'),
-    entities: ['../typeorm/entities/*.ts'],
+    entities: [__dirname + '/../validators/*.entity.{js,ts}'],
     synchronize: true,
   }),
 });
