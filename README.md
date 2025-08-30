@@ -6,18 +6,25 @@ A robust, secure, and scalable authentication service built with NestJS. This se
 
 ## Table of Contents
 
-- [Features](#features)
-- [Project setup](#project-setup)
-- [Environment Variables](#environment-variables)
-- [API Documentation (Swagger)](#api-documentation-swagger)
-- [API Endpoints](#api-endpoints)
-- [Compile and run the project](#compile-and-run-the-project)
-- [Run tests](#run-tests)
-- [Deployment](#deployment)
-- [Resources](#resources)
-- [Support](#support)
-- [Stay in touch](#stay-in-touch)
-- [License](#license)
+- [Auth](#auth)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Project setup](#project-setup)
+  - [Environment Variables](#environment-variables)
+  - [API Documentation (Swagger)](#api-documentation-swagger)
+  - [API Endpoints](#api-endpoints)
+    - [Auth](#auth-1)
+    - [Users](#users)
+    - [Sessions](#sessions)
+    - [Roles \& RBAC](#roles--rbac)
+  - [Security Notes](#security-notes)
+  - [Compile and run the project](#compile-and-run-the-project)
+  - [Run tests](#run-tests)
+  - [Deployment](#deployment)
+  - [Database Tables \& Schemas](#database-tables--schemas)
+  - [Resources](#resources)
+  - [Support](#support)
+  - [License](#license)
 
 
 
@@ -163,6 +170,61 @@ npm install -g @nestjs/mau
 mau deploy
 ```
 
+## Database Tables & Schemas
+
+The following tables are created by this service (using TypeORM):
+
+- **users**
+	- `id` (PK, UUID): Unique user identifier
+	- `email` (unique): User email address
+	- `password_hash`: Hashed password
+	- `first_name`, `last_name`: User names
+	- `roles`: Array of user roles (e.g., user, admin)
+	- `is_verified`: Email verified flag
+	- `email_verified`: Email verified flag (used in flows)
+	- `mfa_enabled`, `mfa_secret`: Multi-factor authentication fields
+	- `refresh_token`: Stores the current refresh token (for session management)
+	- `created_at`, `updated_at`, `last_login`: Timestamps
+
+- **sessions**
+	- `id` (PK, UUID): Unique session identifier
+	- `user_id` (FK): References `users.id`
+	- `token_hash`: Hashed session token
+	- `ip_address`, `user_agent`: Session metadata
+	- `expires_at`, `created_at`: Timestamps
+
+**Key Relationships:**
+- Each user can have multiple sessions (`users.id` → `sessions.user_id`)
+- Roles are stored as a simple array in the `users` table
+- MFA and refresh token fields are per-user (not per-session)
+
+> Note: If you use migrations or change the entity files, your schema may differ. See the `src/validators/*.entity.ts` files for details.
+>
+> ## Architecture: DTOs, Controllers, and Services
+
+This project follows the standard NestJS architecture, which separates concerns as follows:
+
+- **DTOs (Data Transfer Objects):**
+  - Define the shape and validation rules for incoming data (e.g., registration, login, password reset).
+  - Use class-validator decorators (like `@IsEmail`, `@MinLength`) to enforce data integrity before it reaches your business logic.
+  - Example: `RegisterDto`, `ResetPasswordDto`, etc.
+
+- **Controllers:**
+  - Define the API endpoints (routes) and handle HTTP requests/responses.
+  - Receive validated data (DTOs) from the client and delegate processing to services.
+  - Example: `AuthController` exposes `/auth/register`, `/auth/login`, etc.
+
+- **Services:**
+  - Contain the business logic for each feature (e.g., user registration, authentication, session management).
+  - Interact with the database, handle security, and implement core workflows.
+  - Controllers call services to perform actions and return results to the client.
+
+**Flow Example:**
+1. A client sends a POST request to `/auth/register` with registration data.
+2. The controller receives the request and applies the `RegisterDto` for validation.
+3. If validation passes, the controller calls the `AuthService.register()` method.
+4. The service handles user creation, password hashing, and database interaction.
+5. The result is returned to the controller, which sends the response to the client.
 
 ## Resources
 
@@ -172,10 +234,6 @@ mau deploy
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-
-## Stay in touch
-
 
 
 ## License
